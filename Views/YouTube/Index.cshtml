@@ -1,0 +1,127 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<YouTubeApiProject.Models.YouTubeVideoModel>
+
+<h2>Search Videos</h2>
+
+<form asp-action="Search" method="post">
+    <input type="text" class="form-control" name="query" placeholder="search" />
+    <button type="submit" class="btn btn-secondary">Search</button><br>
+
+    <div class="container light-cream-text">
+        <div class="row">
+            <!-- BEGIN SEARCH RESULT -->
+            <div class="col-md-12">
+                <div class="grid search">
+                    <div class="grid-body">
+                        <div class="row">
+                            <!-- BEGIN FILTERS -->
+                            <div class="col-md-3">
+                                <h2 class="grid-title"><i class="fa fa-filter"></i> Filters</h2>
+                                <hr>
+                                <!-- BEGIN FILTER BY EXPLORE-->
+                                <h4>Explore</h4>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="eventType" value="live" class="icheck"> Live</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="categories" value="10" class="icheck"> Music</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="categories" value="20" class="icheck"> Gaming</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="categories" value="25" class="icheck"> News</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="categories" value="17" class="icheck"> Sports</label>
+                                </div>
+                                <!--FILTER FOR VIDEO UPLOAD DATE-->
+                                <div class="mb-5">
+                                    <h5 class="mb-3">Last updated</h5>
+                                    <!-- Select -->
+                                    <select class="form-select form-select-sm" name="uploadDate">
+                                        <option value="">Anytime</option>
+                                        <option value="lastDay">within last day</option>
+                                        <option value="lastWeek">within last week</option>
+                                        <option value="lastMonth">within last month</option>
+                                        <option value="last3Months">within last 3 months</option>
+                                        <option value="last6Months">within last 6 months</option>
+                                    </select>
+                                    <!-- End Select Pagination -->
+                                </div>
+                                <button type="submit" class="btn btn-primary">Search with Filters</button>
+                                <!-- END FILTER BY EXPLORE -->
+                                <div class="padding"></div>
+                            </div>
+                            <!-- END FILTERS -->
+                            <!-- BEGIN RESULT -->
+                            <div class="col-md-9">
+                                <h2><i class="fa fa-file-o"></i> Result</h2>
+                                <hr>
+
+                                @if (Model != null && Model.Any())
+                                {
+                                    <div>
+                                        @foreach (var video in Model)
+                                        {
+                                            <div>
+                                                <h3>@video.Title</h3>
+                                                <p><strong>Channel:</strong> @video.ChannelName</p>
+                                                <p><strong>Published on:</strong> @video.PublishedDate.ToString("MMMM dd, yyyy")</p>
+                                                <img src="@video.ThumbnailUrl" alt="@video.Title" />
+                                                <br />
+                                                <a href="@video.VideoUrl" target="_blank">
+                                                    <button type="button" class="btn btn-primary">Watch</button>  <!-- Watch button -->
+                                                </a><br>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <!-- Pagination -->
+                                    <div>
+                                        <ul class="pagination">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">&laquo;</a>
+                                            </li>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">3</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">4</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">5</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">&raquo;</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p>No results found.</p>
+                                }
+                            </div>
+                            <!-- END RESULT -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END SEARCH RESULT -->
+    </div>
+</form>
+
+
+

@@ -1,0 +1,76 @@
+﻿@model List<YouTubeApiProject.Models.YouTubeVideoModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center text-light">
+    <h2 class="display-4">Welcome To My YouTube API Project</h2>
+
+    <h2>Popular Videos</h2>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var video in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="@video.ThumbnailUrl" class="card-img-top" alt="@video.Title" data-bs-toggle="modal" data-bs-target="#videoModal" data-video-url="@video.VideoUrl">
+                        <div class="card-body">
+                            <h5 class="card-title">@video.Title</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else if (ViewData.ModelState.IsValid)
+    {
+        <p class="text-center">No popular videos found.</p>
+    }
+</div>
+
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="videoFrame" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var videoModal = document.getElementById('videoModal');
+            videoModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var videoUrl = button.getAttribute('data-video-url');
+                var videoFrame = document.getElementById('videoFrame');
+                videoFrame.src = videoUrl;
+            });
+
+            videoModal.addEventListener('hidden.bs.modal', function () {
+                var videoFrame = document.getElementById('videoFrame');
+                videoFrame.src = '';
+            });
+        });
+    </script>
+}
